@@ -1,184 +1,125 @@
-# ReelVault — MERN Movie Discovery App
+# 🎬 Movie Discovery App
 
-A responsive dark-themed movie discovery application built for the Full-Stack Intern Assignment.
+A full-stack movie discovery application built with **React, Node.js, Express, MongoDB, and TMDB API**.
 
-## Stack
+The application allows users to discover movies, search for movies, explore movie details, navigate through paginated results, and maintain a persistent wishlist.
 
-- **Frontend:** React + Vite
-- **Backend:** Node.js + Express
-- **Database:** MongoDB / Mongoose
-- **Third-party API:** TMDB
-- **Architecture:** Shell + feature micro-frontends (`Discovery`, `MovieDetails`, `Wishlist`) with isolated JSX/CSS folders and shared API/UI primitives.
+The project was developed as a Full-Stack Intern assignment with a focus on product-like UX, clean frontend architecture, backend API abstraction, persistence, performance, error handling, and responsive design.
 
-## Assignment coverage
+---
 
-The application supports:
-- Movie discovery without requiring an initial search
-- Search with frontend debounce and request cancellation
-- Genre exploration
-- Sorting
-- Pagination for large result sets
-- Movie detail pages
-- Persistent wishlist stored in MongoDB
-- Loading, empty and error states
-- Responsive layouts for desktop, tablet and mobile
-- Backend abstraction between React and TMDB
-- Server-side short-lived caching to reduce repeated TMDB calls
-- Normalized movie data exposed by the backend rather than leaking TMDB response shapes
+## 🚀 Live Application
 
-These requirements come directly from the assignment, including the backend-as-abstraction requirement, repeated-request handling, fast-changing searches, persistence, responsive behavior and README deliverables. See the supplied assignment: fileciteturn0file0L29-L41 and fileciteturn0file0L113-L128.
+### Frontend
+https://movie-discovery-mern.netlify.app
 
-## Architecture
+### Backend API
+https://movie-discovery-mern.onrender.com
 
-```text
-movie-discovery-mern/
-├── backend/
-│   └── src/
-│       ├── config/
-│       ├── controllers/
-│       ├── middleware/
-│       ├── models/
-│       ├── routes/
-│       └── services/
-└── frontend/
-    └── src/
-        ├── shell/
-        │   └── AppShell/
-        ├── microfrontends/
-        │   ├── Discovery/
-        │   ├── MovieDetails/
-        │   └── Wishlist/
-        └── shared/
-            ├── api/
-            ├── components/
-            └── hooks/
-```
+### GitHub Repository
+https://github.com/amruta-27/movie-discovery-mern
 
-Each feature/component has its own `.jsx` and `.css` file where styling is needed. The feature modules are intentionally isolated so they can be extracted into separately deployed remotes later if the project grows.
+---
 
-## Why the backend sits between React and TMDB
+# ✨ Features
 
-The assignment specifically asks the client to communicate with the Node.js backend rather than the external movie service. The backend therefore:
-1. Owns the TMDB API key.
-2. Normalizes external data into the application's movie model.
-3. Adds a small TTL cache for repeated requests.
-4. Provides a stable API for the React client.
-5. Centralizes external-service error handling.
+## 🎥 Movie Discovery
 
-## Wishlist persistence
+- Browse movies through the discovery page.
+- Explore popular/discoverable movies.
+- Search movies by title.
+- Pagination for continued exploration.
+- Movie cards with poster, title, release date and rating.
+- Graceful handling of missing poster images.
 
-A browser-generated anonymous `userId` is stored in `localStorage`. The ID is sent as `x-user-id` to the backend. MongoDB stores one wishlist document per user ID.
+## 🔎 Search
 
-This avoids requiring authentication for the assignment while still allowing a wishlist to survive browser restarts on the same browser profile.
+- Search movies using the TMDB API.
+- Search requests are debounced to avoid unnecessary API calls.
+- Rapid search changes are handled using request cancellation.
+- Empty search results are handled with a user-friendly empty state.
 
-## Setup
+## 🎬 Movie Details
 
-### 1. Backend
+Users can open a movie and view additional information such as:
 
-```bash
-cd backend
-npm install
-copy .env.example .env
-```
+- Movie title
+- Poster
+- Overview
+- Release date
+- Rating
+- Additional movie information returned by the API
 
-For macOS/Linux:
+The movie detail page can be opened without losing the application's overall navigation context.
 
-```bash
-cp .env.example .env
-```
+## ❤️ Wishlist
 
-Fill in:
+Users can add and remove movies from their wishlist.
 
-```env
-PORT=5000
-MONGODB_URI=your_mongodb_connection_string
-TMDB_API_KEY=your_tmdb_v3_api_key
-TMDB_BASE_URL=https://api.themoviedb.org/3
-CLIENT_URL=http://localhost:5173
-CACHE_TTL_MS=120000
-```
+Wishlist data is persisted using:
 
-Start:
+- MongoDB
+- A browser-generated anonymous user ID stored in `localStorage`
 
-```bash
-npm run dev
-```
+This allows the wishlist to remain available when the user revisits the application from the same browser.
 
-### 2. Frontend
+## 📱 Responsive UI
 
-Open a second terminal:
+The application is designed to work across different screen sizes:
 
-```bash
-cd frontend
-npm install
-copy .env.example .env
-npm run dev
-```
+- Desktop
+- Laptop
+- Tablet
+- Mobile
 
-For macOS/Linux:
+The movie grid adapts based on available screen width.
 
-```bash
-cp .env.example .env
-```
+The UI also handles:
 
-The frontend defaults to:
+- Long movie titles
+- Different poster dimensions
+- Large result sets
+- Empty results
+- Loading states
+- API failures
+- Slow network conditions
 
-```env
-VITE_API_BASE_URL=http://localhost:5000/api
-```
+## ⚡ Performance & Request Handling
 
-Open the Vite URL shown in the terminal.
+The application includes several mechanisms to reduce unnecessary requests and improve user experience:
 
-## TMDB setup
+- Debounced movie search
+- `AbortController` for cancelling outdated search requests
+- Backend caching
+- Pagination
+- Centralized API communication
+- Loading states
+- Error states
+- Empty states
 
-Create a TMDB account and create an API key from the TMDB API settings. Put the key only in `backend/.env`.
+---
 
-Do not put the TMDB secret in frontend code.
+# 🏗️ Architecture
 
-## Production considerations
-
-For a production version I would:
-- Add authentication and user accounts.
-- Replace the in-memory cache with Redis.
-- Add rate limiting and request timeouts.
-- Add structured logging and monitoring.
-- Add tests for controllers, services and critical UI behavior.
-- Add an image CDN / optimized image transformation.
-- Add a proper API gateway or BFF if the micro-frontends become separately deployed.
-- Use Module Federation when independent deployment/versioning becomes a real requirement rather than adding its operational overhead prematurely.
-
-## Known limitations
-
-- The assignment uses anonymous browser-level identity rather than account authentication.
-- The cache is process-local, so it resets when the backend restarts.
-- TMDB API availability and rate limits remain external dependencies.
-- No automated test suite is included in this submission package.
-
-## AI transparency
-
-AI assistance was used to understand the assignment requirements, generate initial boilerplate, reason about API error handling and caching, and review the application structure. The final application structure and behavior were selected to satisfy the assignment requirements, and the implementation should be reviewed and understood before submission.
-
-## Suggested interview explanation
-
-**Data flow**
+The application follows a full-stack architecture:
 
 ```text
-React micro-frontend
-      ↓
-Express REST API
-      ↓
-TMDB service + short TTL cache
-      ↓
-Normalized movie response
-      ↓
-React UI
-
-Wishlist:
-React → Express → MongoDB → Express → React
-```
-
-**Fast search behavior:** the frontend debounces typing and aborts stale requests. The backend also caches identical requests briefly.
-
-**Why MongoDB:** the wishlist is document-shaped, small, and naturally represented as a user document containing movie snapshots.
-
-**Why feature micro-frontends:** Discovery, Details and Wishlist are isolated feature boundaries. This makes ownership and future extraction clearer while avoiding unnecessary deployment complexity for a small assignment.
+                    ┌──────────────────────┐
+                    │      React App       │
+                    │      Frontend        │
+                    └──────────┬───────────┘
+                               │
+                               │ REST API
+                               ▼
+                    ┌──────────────────────┐
+                    │    Node.js + Express │
+                    │       Backend        │
+                    └──────────┬───────────┘
+                               │
+              ┌────────────────┴────────────────┐
+              │                                 │
+              ▼                                 ▼
+      ┌──────────────────┐             ┌──────────────────┐
+      │     TMDB API     │             │     MongoDB      │
+      │  Movie Data      │             │    Wishlist      │
+      └──────────────────┘             └──────────────────┘
