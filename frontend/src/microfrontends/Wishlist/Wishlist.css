@@ -1,0 +1,17 @@
+.wishlist-heading {
+  display: flex; align-items: center; gap: 17px;
+  padding: 30px 0 35px;
+}
+.wishlist-icon {
+  width: 58px; height: 58px; display: grid; place-items: center;
+  border: 1px solid #572027; border-radius: 15px;
+  background: #241012; color: #e50914;
+}
+.wishlist-heading .eyebrow { color: #e50914; font-size: 11px; font-weight: 800; letter-spacing: 1.5px; }
+.wishlist-heading h1 { margin: 3px 0 3px; font-size: 36px; }
+.wishlist-heading p { margin: 0; color: #777; }
+.wishlist-count { margin-bottom: 15px; color: #777; font-size: 13px; }
+@media (max-width: 500px) {
+  .wishlist-heading { align-items: flex-start; }
+  .wishlist-heading h1 { font-size: 30px; }
+}

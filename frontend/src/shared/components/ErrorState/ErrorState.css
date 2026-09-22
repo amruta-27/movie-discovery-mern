@@ -1,0 +1,26 @@
+.error-state {
+  margin: 30px 0;
+  padding: 28px;
+  display: grid;
+  justify-items: center;
+  gap: 9px;
+  border: 1px solid #2d2d2d;
+  border-radius: 18px;
+  background: #111;
+  color: #aaa;
+  text-align: center;
+}
+
+.error-state strong { color: #fff; font-size: 18px; }
+
+.error-retry {
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 14px;
+  border: 1px solid #3a3a3a;
+  border-radius: 10px;
+  background: #1b1b1b;
+  color: #fff;
+}

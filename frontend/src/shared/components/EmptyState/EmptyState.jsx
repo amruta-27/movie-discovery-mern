@@ -1,0 +1,11 @@
+import "./EmptyState.css";
+
+export default function EmptyState({ title, text }) {
+  return (
+    <div className="empty-state">
+      <div className="empty-icon">✦</div>
+      <h3>{title}</h3>
+      <p>{text}</p>
+    </div>
+  );
+}
