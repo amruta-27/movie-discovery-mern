@@ -1,12 +1,13 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
 
 export async function apiFetch(path, options = {}) {
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...(options.headers || {})
-    }
+      ...(options.headers || {}),
+    },
   });
 
   const data = await response.json().catch(() => ({}));
@@ -23,18 +24,20 @@ export const movieApi = {
     const params = new URLSearchParams({ query, page }).toString();
     return apiFetch(`/movies/search?${params}`, { signal });
   },
-  details: (id, signal) => apiFetch(`/movies/${id}`, { signal })
+  details: (id, signal) => apiFetch(`/movies/${id}`, { signal }),
 };
 
 export const wishlistApi = {
   list: (userId) => apiFetch("/wishlist", { headers: { "x-user-id": userId } }),
-  add: (userId, movie) => apiFetch("/wishlist", {
-    method: "POST",
-    headers: { "x-user-id": userId },
-    body: JSON.stringify(movie)
-  }),
-  remove: (userId, movieId) => apiFetch(`/wishlist/${movieId}`, {
-    method: "DELETE",
-    headers: { "x-user-id": userId }
-  })
+  add: (userId, movie) =>
+    apiFetch("/wishlist", {
+      method: "POST",
+      headers: { "x-user-id": userId },
+      body: JSON.stringify(movie),
+    }),
+  remove: (userId, movieId) =>
+    apiFetch(`/wishlist/${movieId}`, {
+      method: "DELETE",
+      headers: { "x-user-id": userId },
+    }),
 };
